@@ -29,6 +29,16 @@ class LinePainter extends CustomPainter{
       ..strokeWidth = width;
     Offset center  = new Offset(size.width/2, size.height/2);
     double radius  = min(size.width/2,size.height/2);
+
+
+
+
+
+
+
+
+
+
     canvas.drawArc(
         new Rect.fromCircle(center: center,radius: radius),
         25*angle,

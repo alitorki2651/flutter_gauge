@@ -2,14 +2,19 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import 'fluttergauge.dart';
+
 class HandPainter extends CustomPainter{
   final Paint minuteHandPaint;
   double value;
   int start;
   int end;
   Color color;
+  double handSize;
+  Hand hand;
+  double shadowHand;
 
-  HandPainter({this.value,this.start,this.end,this.color}):minuteHandPaint= new Paint(){
+  HandPainter({this.shadowHand,this.hand,this.value,this.start,this.end,this.color,this.handSize}):minuteHandPaint= new Paint(){
     minuteHandPaint.color= this.color;
     minuteHandPaint.style= PaintingStyle.fill;
 
@@ -19,7 +24,7 @@ class HandPainter extends CustomPainter{
   void paint(Canvas canvas, Size size) {
 
 //      for(int i = 0;i == 2; i++){
-    final radius= size.width/2;
+    var radius= size.width/2;
     double gamma = ((2/3)*this.end);
 
 
@@ -33,17 +38,30 @@ class HandPainter extends CustomPainter{
     canvas.rotate(2*pi*((realValue)/this.end));
 
 
+
+
+
+
     Path path= new Path();
-    path.moveTo(-1.5, -radius-10.0);
-    path.lineTo(-5.0, -radius/1.8);
-    path.lineTo(-10.0, 10.0);/// change 2 => 5
-    path.lineTo(10.0, 10.0);/// change 2 => 5
-    path.lineTo(5.0, -radius/1.8);
-    path.lineTo(1.5, -radius-10.0);
+    if(hand == Hand.short){
+      path.moveTo(-1.0, -radius-handSize/8.0);
+      path.lineTo(-5.0, -radius/1.8);
+      path.lineTo(5.0, -radius/1.8);
+      path.lineTo(1.0, -radius-handSize/8);
+    }else{
+      path.moveTo(-1.5, -radius-handSize/3.0);
+      path.lineTo(-5.0, -radius/1.8);
+      path.lineTo(-handSize/3, handSize/3);/// change 2 => 5
+      path.lineTo(handSize/3, handSize/3);/// change 2 => 5
+      path.lineTo(5.0, -radius/1.8);
+      path.lineTo(1.5, -radius-handSize/3);
+    }
+
+
     path.close();
 
     canvas.drawPath(path, minuteHandPaint);
-    canvas.drawShadow(path, this.color, 4.0, false);
+    canvas.drawShadow(path, this.color, shadowHand, false);
 
     canvas.restore();
   }

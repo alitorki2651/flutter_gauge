@@ -1,4 +1,6 @@
 library flutter_gauge;
+import 'dart:async';
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -9,27 +11,78 @@ import 'package:rxdart/rxdart.dart';
 
 import 'gaugetextpainter.dart';
 
-class FlutterGauge extends StatefulWidget {
+enum SecondsMarker {
+  minutes,
+  secondsAndMinute,
+  all,
+  none,
+  seconds
+}
+
+enum Number {
+  all,
+  endAndStart,
+  endAndCenterAndStart,
+  none,
+}
+
+
+enum CounterAlign{
+  none,
+  center,
+  top,
+  bottom,
+}
+
+
+enum Hand{
+  none,
+  long,
+  short
+}
+
+
+
+
+
+
+class FlutterGaugeMain extends StatefulWidget {
 
   int start;
   int end;
   double highlightStart;
   double highlightEnd;
-  ThemeData themeData;
+//  ThemeData themeData;
   String fontFamily;
   double width;
   PublishSubject<double> eventObservable;
   Color colorHourHand;
-  FlutterGauge({this.start,this.end,this.highlightStart,this.highlightEnd,this.themeData, this.eventObservable,@required this.fontFamily,@required this.width,@required this.colorHourHand,}){
+  Number number;
+  CounterAlign counterAlign;
+  Hand hand;
+  bool isCircle;
+  Map isMark;
+  double handSize;
+  SecondsMarker secondsMarker;
+  double shadowHand;
+  Color primaryColor;
+  Color accentColor;
+  Color backgroundColor;
+  Color indicatorColor;
+  double paddingHand;
+
+
+
+  FlutterGaugeMain({this.paddingHand=30.0,this.primaryColor = Colors.cyan,this.accentColor = Colors.black,this.backgroundColor = Colors.cyan,this.indicatorColor = Colors.black,this.shadowHand=4.0,this.counterAlign=CounterAlign.bottom,this.number=Number.all,this.isCircle=true,this.hand= Hand.long,this.secondsMarker=SecondsMarker.all,this.isMark,this.handSize=30,this.start,this.end,this.highlightStart,this.highlightEnd, this.eventObservable,@required this.fontFamily,@required this.width,@required this.colorHourHand,}){
 //        print(this.highlightEnd);
 
   }
 
   @override
-  _FlutterGaugeState createState() => new _FlutterGaugeState(this.start,this.end,this.highlightStart,this.highlightEnd,this.eventObservable);
+  _FlutterGaugeMainState createState() => new _FlutterGaugeMainState(this.start,this.end,this.highlightStart,this.highlightEnd,this.eventObservable);
 }
 
-class _FlutterGaugeState extends State<FlutterGauge>  with TickerProviderStateMixin{
+class _FlutterGaugeMainState extends State<FlutterGaugeMain>  with TickerProviderStateMixin{
   int start;
   int end;
   double highlightStart;
@@ -38,9 +91,10 @@ class _FlutterGaugeState extends State<FlutterGauge>  with TickerProviderStateMi
   double val = 0.0;
   double newVal;
   AnimationController percentageAnimationController;
+  StreamSubscription<double> subscription;
 
 
-  _FlutterGaugeState(int start, int end, double highlightStart, double highlightEnd, PublishSubject<double> eventObservable) {
+  _FlutterGaugeMainState(int start, int end, double highlightStart, double highlightEnd, PublishSubject<double> eventObservable) {
     this.start = start;
     this.end = end;
     this.highlightStart = highlightStart;
@@ -57,7 +111,9 @@ class _FlutterGaugeState extends State<FlutterGauge>  with TickerProviderStateMi
           val = lerpDouble(val,newVal,percentageAnimationController.value);
         });
       });
-    this.eventObservable.listen((value) => reloadData(value));
+    subscription = this.eventObservable.listen((value) {
+      (value >= this.end) ? reloadData(this.end.toDouble()) : reloadData(value);
+    });//(value) => reloadData(value));
   }
 
   reloadData(double value){
@@ -74,84 +130,110 @@ class _FlutterGaugeState extends State<FlutterGauge>  with TickerProviderStateMi
             return new Container(
               height: constraints.maxWidth,
               width: constraints.maxWidth,
+              padding: EdgeInsets.all(25),
               child: new Stack(
                   fit: StackFit.expand,
 
-                  children: <Widget>[new Container(
-                    child: new CustomPaint(
-                        foregroundPainter: new LinePainter(
-                            lineColor: this.widget.themeData.backgroundColor,
-                            completeColor: this.widget.themeData.primaryColor,
-                            startValue: this.start,
-                            endValue: this.end,
-                            startPercent: this.widget.highlightStart,
-                            endPercent: this.widget.highlightEnd,
-                            width: this.widget.width,
-                            value: this.val
-                        )
-                    ),
-                  ),
-                    new Center(
-                      //   aspectRatio: 1.0,
+                  children: <Widget>[
+
+                    widget.isCircle == true
+                    ?new Container(
+                      height: constraints.maxWidth,
+                      width: constraints.maxWidth,
+                      child: new CustomPaint(
+                          foregroundPainter: new LinePainter(
+                              lineColor: this.widget.backgroundColor,
+                              completeColor: this.widget.primaryColor,
+                              startValue: this.start,
+                              endValue: this.end,
+                              startPercent: this.widget.highlightStart,
+                              endPercent: this.widget.highlightEnd,
+                              width: this.widget.width,
+                              value: this.val
+                          )
+                      ),
+                    )
+                    :SizedBox(),
+
+
+                    widget.hand != Hand.none
+                    ?new Center(
                         child: new Container(
-                            height: constraints.maxWidth,
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(30.0),
-                            child: new Stack(
-                                fit: StackFit.expand,
-                                children: <Widget>[
-                                  new CustomPaint(
-                                    painter: new HandPainter(
-                                        value: val,
-                                        start: this.start,
-                                        end: this.end,
-                                        color: this.widget.themeData.accentColor),
-                                  ),
-                                ]
-                            )
+                          height: constraints.maxWidth,
+                          width: constraints.maxWidth,
+                          padding: EdgeInsets.all(widget.hand == Hand.short ?0.0 :widget.paddingHand),
+                          child: new CustomPaint(
+                            painter: new HandPainter(
+                                shadowHand: widget.shadowHand,
+                                hand: widget.hand,
+                                value: val,
+                                start: this.start,
+                                end: this.end,
+                                color: this.widget.accentColor,
+                                handSize: widget.handSize
+                            ),
+                          ),
                         )
-                    ),
-                    new Center(
+                    )
+                    :SizedBox(),
+
+
+
+                    widget.hand == Hand.none || widget.hand == Hand.short
+                    ?SizedBox()
+                    :new Center(
                       child: new Container(
-                        width: 30.0,
-                        height: 30.0,
+                        width: widget.handSize,
+                        height: widget.handSize,
                         decoration: new BoxDecoration(
                           shape: BoxShape.circle,
-                          color: this.widget.themeData.indicatorColor,
+                          color: this.widget.indicatorColor,
                         ),
                       ),
                     ),
 
-                    new CustomPaint(
-                        painter: new GaugeTextPainter(
-                            start: this.start,
-                            end: this.end,
-                            value: this.val,
-                            fontFamily: widget.fontFamily,
-                            color: this.widget.colorHourHand,
-                            textStyle: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15.0,
-                                fontFamily: widget.fontFamily
-                            )
-                        )),
+                    Container(
+                      height: constraints.maxWidth,
+                      width: constraints.maxWidth,
+                      child: new CustomPaint(
+                          painter: new GaugeTextPainter(
+                              secondsMarker: widget.secondsMarker,
+                              number: widget.number,
+                              start: this.start,
+                              end: this.end,
+                              value: this.val,
+                              fontFamily: widget.fontFamily,
+                              color: this.widget.colorHourHand,
+                              width: widget.width,
+                              textStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15.0,
+                                  fontFamily: widget.fontFamily
+                              )
+                          )),
+                    ),
 
 
-
-                    new CustomPaint(
-                        painter: new GaugeTextCounter(
-                            start: this.start,
-                            end: this.end,
-                            value: this.val,
-                            fontFamily: widget.fontFamily,
-                            color: this.widget.colorHourHand,
-                            textStyle: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15.0,
-                                fontFamily: widget.fontFamily
-                            )
-                        )),
-
+                    Container(
+                      child: widget.counterAlign != CounterAlign.none
+                      ?new CustomPaint(
+                          painter: new GaugeTextCounter(
+                              start: this.start,
+                              width: widget.width,
+                              counterAlign: widget.counterAlign,
+                              end: this.end,
+                              value: this.val,
+                              fontFamily: widget.fontFamily,
+                              color: this.widget.colorHourHand,
+                              textStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20.0,
+                                  fontFamily: widget.fontFamily
+                              )
+                          )
+                      )
+                      :SizedBox(),
+                    )
 
 
 
