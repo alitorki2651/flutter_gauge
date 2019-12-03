@@ -1,9 +1,9 @@
-# FlutterGauge
 
-A little widget that given an Observable gives you an updated FlutterGauge.
-
-![](https://github.com/alitorki2651/flutter_gauge.git?raw=true&s=200)
-
+### Chart Types
+![](https://github.com/alitorki2651/flutter_gauge/tree/master/Image/1.jpg)
+![](https://github.com/alitorki2651/flutter_gauge/tree/master/Image/1.jpg)
+![](https://github.com/alitorki2651/flutter_gauge/tree/master/Image/1.jpg)
+![](https://github.com/alitorki2651/flutter_gauge/tree/master/Image/1.jpg)
 
 ---
 ## Getting Started
@@ -11,7 +11,7 @@ A little widget that given an Observable gives you an updated FlutterGauge.
 You should ensure that you add the following dependency in your Flutter project.
 ```yaml
 dependencies:
- flutter_gauge: "^1.0.1"
+ flutter_gauge: ^1.0.7
 ```
 
 You should then run `flutter packages upgrade` or update your packages in IntelliJ.
@@ -32,19 +32,16 @@ An example can be found in the `example` folder.  Check it out.
 ```dart
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gauge/fluttergauge.dart';
-import 'dart:async';
-import 'package:rxdart/rxdart.dart';
+import 'package:flutter_gauge/flutter_gauge.dart';
 
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Gauge',
+      title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       home: MyHomePage(),
     );
@@ -57,90 +54,48 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  double count = 99;
-  animateHourHand(count,oldCount){
-    if(count + 10 < oldCount || count - 10 > oldCount){
-      if(oldCount < count){
-        Timer(Duration(milliseconds: 1000),(){
-          eventObservable.add(count+3);
-          Timer(Duration(milliseconds: 700),(){
-            eventObservable.add(count-2);
-            Timer(Duration(milliseconds: 400),(){
-              eventObservable.add(count);
-            });
-          });
-        });
-      }else{
-        Timer(Duration(milliseconds: 1000),(){
-          eventObservable.add(count-3);
-          Timer(Duration(milliseconds: 700),(){
-            eventObservable.add(count+0.5);
-            Timer(Duration(milliseconds: 400),(){
-              eventObservable.add(count);
-            });
-          });
-        });
-      }
-    }else{
-      eventObservable.add(count);
-    }
-  }
-
-  PublishSubject<double> eventObservable = new PublishSubject();
-
   @override
   Widget build(BuildContext context) {
-    animateHourHand(50.0,7.0);
     return Scaffold(
       body: ListView(
         children: <Widget>[
-          Container(color:Colors.black12,child: FlutterGaugeExample(count: count,padding: EdgeInsets.all(30),eventObservable: eventObservable,)),
+          Row(
+            children: <Widget>[
+              Expanded(child: FlutterGauge(handSize: 30,width: 200,index: 65.0,fontFamily: "Iran",end: 100,number: Number.endAndCenterAndStart,secondsMarker: SecondsMarker.secondsAndMinute,counterStyle: TextStyle(color: Colors.black,fontSize: 25,)),),
+              Expanded(child: FlutterGauge(secondsMarker: SecondsMarker.none,hand: Hand.short,number: Number.none,width: 200,index: 38.0,fontFamily: "Iran",counterStyle: TextStyle(color: Colors.black,fontSize: 35),counterAlign: CounterAlign.center,isDecimal: false),),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Expanded(child: FlutterGauge(handSize: 30,width: 200,index: 80.0,fontFamily: "Iran",end: 100,number: Number.endAndCenterAndStart,secondsMarker: SecondsMarker.secondsAndMinute,hand: Hand.short,counterStyle: TextStyle(color: Colors.black,fontSize: 22,)),),
+              Expanded(child: FlutterGauge(handSize: 30,width: 200,index: 65.0,fontFamily: "Iran",end: 500,number: Number.endAndStart,secondsMarker: SecondsMarker.minutes,isCircle: false,counterStyle: TextStyle(color: Colors.black,fontSize: 25,)),),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Expanded(child: Container(color: Colors.black38,child: FlutterGauge(inactiveColor: Colors.white38,activeColor: Colors.white,handSize: 30,width: 200,index: 65.0,fontFamily: "Iran",end: 400,number: Number.none,secondsMarker: SecondsMarker.minutes,isCircle: false,hand: Hand.none,counterAlign: CounterAlign.center,counterStyle: TextStyle(color: Colors.white,fontSize: 30,),isDecimal: false,)),),
+              Expanded(child: FlutterGauge(width: 200,index: 67.3,fontFamily: "Iran",counterStyle: TextStyle(color: Colors.black,fontSize: 35,),numberInAndOut: NumberInAndOut.outside,counterAlign: CounterAlign.center,secondsMarker: SecondsMarker.secondsAndMinute,hand: Hand.short),),
+            ],
+          ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Expanded(child: FlutterGauge(index: 50.0,counterStyle : TextStyle(color: Colors.black,fontSize: 25,),widthCircle: 10,secondsMarker: SecondsMarker.none,number: Number.all),),
+              Expanded(child: FlutterGauge(index: 25.0,counterStyle : TextStyle(color: Colors.black,fontSize: 25,),secondsMarker: SecondsMarker.secondsAndMinute,number: Number.all,numberInAndOut: NumberInAndOut.outside,)),
+            ],
+          ),Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Expanded(child: FlutterGauge(index: 50.0,width: 800,counterStyle : TextStyle(color: Colors.black,fontSize: 25,),widthCircle: 10,secondsMarker: SecondsMarker.none,number: Number.all),),
+            ],
+          ),
+
         ],
       ),
     );
   }
 }
-
-
-
-
-
-
-
-class FlutterGaugeExample extends StatefulWidget {
-  FlutterGaugeExample({this.padding,@required this.count,this.eventObservable});
-  double count;
-  EdgeInsetsGeometry padding;
-  PublishSubject<double> eventObservable;
-
-  @override
-  _FlutterGaugeExampleState createState() => new _FlutterGaugeExampleState();
-}
-
-class _FlutterGaugeExampleState extends State<FlutterGaugeExample> {
-  int counter = 0;
-
-
-
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData somTheme = new ThemeData(
-      primaryColor: Colors.cyan,
-      accentColor: Colors.black,
-      backgroundColor: Colors.cyan,
-      indicatorColor: Colors.black,
-    );
-    return  Padding(
-      padding: widget.padding == null ?EdgeInsets.all(0) :widget.padding,
-      child: new FlutterGauge(start:0, end: (widget.count).toInt(), highlightStart:(widget.count/widget.count.toInt()), highlightEnd:(0/widget.count.toInt()), themeData:somTheme, eventObservable: widget.eventObservable,fontFamily: "Iran",width: 20,colorHourHand: Colors.black,),
-    );
-  }
-
-
-}
-
-
-
 
 
 

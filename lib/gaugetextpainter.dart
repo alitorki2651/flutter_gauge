@@ -85,9 +85,9 @@ class GaugeTextPainter extends CustomPainter {
         String label = i.toString();
         canvas.save();
         if(numberInAndOut == NumberInAndOut.inside){
-          canvas.translate(i == 40 ? -0.0 : 0.0, -radius + (widthCircle*1.5));
+          canvas.translate(i == 40 ? -0.0 : 0.0, -radius + (widthCircle*1.6));
         }else{
-          canvas.translate(i == 40 ? -0.0 : 0.0, -radius - (widthCircle*1.2));
+          canvas.translate(i == 40 ? -0.0 : 0.0, -radius - (widthCircle*1.4));
         }
 
         textPainter.text = new TextSpan(
@@ -102,14 +102,14 @@ class GaugeTextPainter extends CustomPainter {
 
 
         if(number == Number.all){
-          textPainter.paint(canvas, new Offset(-(textPainter.width / 2), -(textPainter.height / 2)));
+          textPainter.paint(canvas, new Offset(-(textPainter.width / 2), -(textPainter.height / 1.5)));
         }else if(number == Number.endAndStart){
           if(i == 0 || i == end){
             textPainter.paint(canvas, new Offset(-(textPainter.width / 2), -(textPainter.height / 2)));
           }
         }else if(number == Number.endAndCenterAndStart){
           if(i == 0 || i == end ||  i == end ~/ 2){
-            textPainter.paint(canvas, new Offset(-(textPainter.width / 2), -(textPainter.height / 2)));
+            textPainter.paint(canvas, new Offset(-(textPainter.width / 2), -(textPainter.height / 1.5)));
           }
         }
 
@@ -214,9 +214,9 @@ class GaugeTextCounter extends CustomPainter {
         canvas.save();
 
         if(counterAlign == CounterAlign.bottom){
-          canvas.translate(0.0, -radius + width + width);
+          canvas.translate(0.0, -radius + (60) );
         }else if(counterAlign == CounterAlign.top){
-          canvas.translate(0.0, radius - width);
+          canvas.translate(0.0, radius - (40));
         }
 
         textPainter.text = new TextSpan(

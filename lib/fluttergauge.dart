@@ -54,7 +54,7 @@ class FlutterGaugeMain extends StatefulWidget {
 
 
   FlutterGaugeMain({this.isDecimal,this.inactiveColor, this.activeColor, this.textStyle,this.counterStyle,this.numberInAndOut,this.width,this.paddingHand=30.0,this.primaryColor = Colors.cyan,this.accentColor = Colors.black,this.backgroundColor = Colors.cyan,this.indicatorColor = Colors.black,this.shadowHand=4.0,this.counterAlign=CounterAlign.bottom,this.number=Number.all,this.isCircle=true,this.hand= Hand.long,this.secondsMarker=SecondsMarker.all,this.isMark,this.handSize=30,this.start,this.end,this.highlightStart,this.highlightEnd, this.eventObservable,@required this.fontFamily,@required this.widthCircle,this.colorHourHand=Colors.black,}){
-    padding = EdgeInsets.all(widthCircle+(widthCircle/4));
+    padding = EdgeInsets.all(widthCircle);
   }
 
   @override
@@ -183,7 +183,7 @@ class _FlutterGaugeMainState extends State<FlutterGaugeMain>  with TickerProvide
                         child: new Container(
                           height: constraints.maxWidth,
                           width: constraints.maxWidth,
-                          padding: EdgeInsets.all(widget.hand == Hand.short ?widget.widthCircle :widget.paddingHand),
+                          padding: EdgeInsets.all(widget.hand == Hand.short ?widget.widthCircle/1.5 :widget.paddingHand),
                           child: new CustomPaint(
                             painter: new HandPainter(
                                 shadowHand: widget.shadowHand,
