@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gauge/flutter_gauge.dart';
 
 import 'fluttergauge.dart';
 
@@ -51,8 +52,8 @@ class HandPainter extends CustomPainter{
     }else{
       path.moveTo(-1.5, -radius-handSize/3.0);
       path.lineTo(-5.0, -radius/1.8);
-      path.lineTo(-handSize/3, handSize/3);/// change 2 => 5
-      path.lineTo(handSize/3, handSize/3);/// change 2 => 5
+      path.lineTo(-handSize/3, handSize/5);/// change 2 => 5
+      path.lineTo(handSize/3, handSize/5);/// change 2 => 5
       path.lineTo(5.0, -radius/1.8);
       path.lineTo(1.5, -radius-handSize/3);
     }

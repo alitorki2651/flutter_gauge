@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_gauge/flutter_gauge.dart';
 
 import 'fluttergauge.dart';
 
@@ -17,19 +18,22 @@ class GaugeTextPainter extends CustomPainter {
   int end;
   int start;
   double value;
-  double width;
+  double widthCircle;
   String fontFamily;
   Color color;
   Number number;
   SecondsMarker secondsMarker;
+  NumberInAndOut numberInAndOut;
+  Color inactiveColor;
+  Color activeColor;
 
-  GaugeTextPainter({this.width,this.secondsMarker,this.start, this.end, this.value,this.fontFamily,this.textStyle,@required this.color,this.number,})
+  GaugeTextPainter({this.inactiveColor, this.activeColor, this.numberInAndOut,this.widthCircle,this.secondsMarker,this.start, this.end, this.value,this.fontFamily,this.textStyle,@required this.color,this.number,})
       : tickPaint = new Paint(),
         textPainter = new TextPainter(
           textAlign: TextAlign.center,
           textDirection: TextDirection.rtl,
         ){
-    tickPaint.color = Colors.red;
+    tickPaint.color = activeColor;
   }
   @override
   void paint(Canvas canvas, Size size) {
@@ -51,7 +55,7 @@ class GaugeTextPainter extends CustomPainter {
           : secondsMarker != SecondsMarker.seconds ?minuteTickMarkLength :hourTickMarkWidth;
 
       if(value.toInt() == i){
-        tickPaint.color = Colors.black;
+        tickPaint.color = inactiveColor;
 
       }
 
@@ -70,7 +74,7 @@ class GaugeTextPainter extends CustomPainter {
             canvas.drawLine(new Offset(0.0, -radius + 18), new Offset(0.0, -radius + 12), tickPaint);
           }
         }else if(secondsMarker == SecondsMarker.seconds){
-          canvas.drawLine(new Offset(0.0, -radius - width/2), new Offset(0.0, -radius + width/2 ), tickPaint);
+          canvas.drawLine(new Offset(0.0, -radius - widthCircle/2), new Offset(0.0, -radius + widthCircle/2 ), tickPaint);
         }
 
       }
@@ -80,7 +84,12 @@ class GaugeTextPainter extends CustomPainter {
 //                String label = i == 40 ? start.toString() : this.end.toString();
         String label = i.toString();
         canvas.save();
-        canvas.translate(i == 40 ? -0.0 : 0.0, -radius + 40.0);
+        if(numberInAndOut == NumberInAndOut.inside){
+          canvas.translate(i == 40 ? -0.0 : 0.0, -radius + (widthCircle*1.5));
+        }else{
+          canvas.translate(i == 40 ? -0.0 : 0.0, -radius - (widthCircle*1.2));
+        }
+
         textPainter.text = new TextSpan(
           text: label,
           style: textStyle,
@@ -174,8 +183,9 @@ class GaugeTextCounter extends CustomPainter {
   Color color;
   CounterAlign counterAlign;
   double width;
+  bool isDecimal;
 
-  GaugeTextCounter({this.width,this.counterAlign,this.start, this.end, this.value,this.fontFamily,this.textStyle,@required this.color})
+  GaugeTextCounter({this.isDecimal,this.width,this.counterAlign,this.start, this.end, this.value,this.fontFamily,this.textStyle,@required this.color})
       : tickPaint = new Paint(),
         textPainter = new TextPainter(
           textAlign: TextAlign.center,
@@ -192,7 +202,15 @@ class GaugeTextCounter extends CustomPainter {
     for (var i = 0; i <= 60; i++) {
 
       if (i == 30) {
-        String label = this.value.toStringAsFixed(1);
+
+        String label;
+
+        if(isDecimal == true){
+          label = this.value.toStringAsFixed(1);
+        }else{
+          label = (this.value.toInt()).toString();
+        }
+
         canvas.save();
 
         if(counterAlign == CounterAlign.bottom){
