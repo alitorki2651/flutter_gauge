@@ -57,19 +57,17 @@ class FlutterGauge extends StatefulWidget {
   double widthCircle;
   double index;
   double width;
-  Color colorHourHand;
   Number number;
   NumberInAndOut numberInAndOut;
   CounterAlign counterAlign;
   Hand hand;
   bool isCircle;
-
   double handSize;
   bool isDecimal;
   SecondsMarker secondsMarker;
   double shadowHand;
-  Color primaryColor;
-  Color accentColor;
+  Color circleColor;
+  Color handColor;
   Color backgroundColor;
   Color indicatorColor;
   Color inactiveColor;
@@ -79,7 +77,7 @@ class FlutterGauge extends StatefulWidget {
   TextStyle counterStyle;
   TextStyle textStyle;
 
-  FlutterGauge({this.isDecimal=true,this.inactiveColor = Colors.black,this.activeColor = Colors.red,this.textStyle,this.counterStyle,this.numberInAndOut = NumberInAndOut.inside,this.width/*,this.animate=Animate.none*/,this.paddingHand=30.0,this.primaryColor = Colors.cyan,this.accentColor = Colors.black,this.backgroundColor = Colors.cyan,this.indicatorColor = Colors.black,this.shadowHand=4.0,this.counterAlign=CounterAlign.bottom,this.number=Number.all,this.isCircle=true,this.hand= Hand.long,this.secondsMarker=SecondsMarker.all,this.handSize=30,this.start=0,this.end=100,@required this.index,this.fontFamily="",this.widthCircle=20,this.colorHourHand=Colors.black,});
+  FlutterGauge({this.isDecimal=true,this.inactiveColor = Colors.black,this.activeColor = Colors.red,this.textStyle,this.counterStyle,this.numberInAndOut = NumberInAndOut.inside,this.width/*,this.animate=Animate.none*/,this.paddingHand=30.0,this.circleColor = Colors.cyan,this.handColor = Colors.black,this.backgroundColor = Colors.cyan,this.indicatorColor = Colors.black,this.shadowHand=4.0,this.counterAlign=CounterAlign.bottom,this.number=Number.all,this.isCircle=true,this.hand= Hand.long,this.secondsMarker=SecondsMarker.all,this.handSize=30,this.start=0,this.end=100,@required this.index,this.fontFamily="",this.widthCircle=20,});
 
 
   @override
@@ -87,6 +85,15 @@ class FlutterGauge extends StatefulWidget {
 }
 
 class _FlutterGaugeState extends State<FlutterGauge> {
+
+
+  @override
+  void initState() {
+    super.initState();
+    Timer(Duration(milliseconds: 400), (){
+      eventObservable.add(widget.index);
+    });
+  }
 
 
   PublishSubject<double> eventObservable = new PublishSubject();
@@ -158,15 +165,15 @@ class _FlutterGaugeState extends State<FlutterGauge> {
   @override
   Widget build(BuildContext context) {
 //    animateHourHand(widget.index,7.0);
-    eventObservable.add(widget.index);
+//    eventObservable.add(widget.index);
     return FlutterGaugeMain(
       isDecimal: widget.isDecimal,
       counterStyle: widget.counterStyle,
       textStyle: widget.textStyle,
       numberInAndOut: widget.numberInAndOut,
       paddingHand : widget.paddingHand,
-      primaryColor : widget.primaryColor,
-      accentColor : widget.accentColor,
+      circleColor : widget.circleColor,
+      handColor : widget.handColor,
       backgroundColor : widget.backgroundColor,
       indicatorColor : widget.indicatorColor ,
       shadowHand : widget.shadowHand,
@@ -183,7 +190,6 @@ class _FlutterGaugeState extends State<FlutterGauge> {
       eventObservable : eventObservable,
       fontFamily : widget.fontFamily,
       widthCircle : widget.widthCircle > 30 ? 30 :widget.widthCircle,
-      colorHourHand : widget.colorHourHand,
       inactiveColor : widget.inactiveColor,
       activeColor : widget.activeColor,
       width : (

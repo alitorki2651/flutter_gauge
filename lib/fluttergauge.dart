@@ -29,7 +29,6 @@ class FlutterGaugeMain extends StatefulWidget {
   String fontFamily;
   double widthCircle;
   PublishSubject<double> eventObservable;
-  Color colorHourHand;
   Number number;
   CounterAlign counterAlign;
   Hand hand;
@@ -38,8 +37,8 @@ class FlutterGaugeMain extends StatefulWidget {
   double handSize;
   SecondsMarker secondsMarker;
   double shadowHand;
-  Color primaryColor;
-  Color accentColor;
+  Color circleColor;
+  Color handColor;
   Color backgroundColor;
   Color indicatorColor;
   double paddingHand;
@@ -53,7 +52,7 @@ class FlutterGaugeMain extends StatefulWidget {
   bool isDecimal;
 
 
-  FlutterGaugeMain({this.isDecimal,this.inactiveColor, this.activeColor, this.textStyle,this.counterStyle,this.numberInAndOut,this.width,this.paddingHand=30.0,this.primaryColor = Colors.cyan,this.accentColor = Colors.black,this.backgroundColor = Colors.cyan,this.indicatorColor = Colors.black,this.shadowHand=4.0,this.counterAlign=CounterAlign.bottom,this.number=Number.all,this.isCircle=true,this.hand= Hand.long,this.secondsMarker=SecondsMarker.all,this.isMark,this.handSize=30,this.start,this.end,this.highlightStart,this.highlightEnd, this.eventObservable,@required this.fontFamily,@required this.widthCircle,this.colorHourHand=Colors.black,}){
+  FlutterGaugeMain({this.isDecimal,this.inactiveColor, this.activeColor, this.textStyle,this.counterStyle,this.numberInAndOut,this.width,this.paddingHand=30.0,this.circleColor = Colors.cyan,this.handColor = Colors.black,this.backgroundColor = Colors.cyan,this.indicatorColor = Colors.black,this.shadowHand=4.0,this.counterAlign=CounterAlign.bottom,this.number=Number.all,this.isCircle=true,this.hand= Hand.long,this.secondsMarker=SecondsMarker.all,this.isMark,this.handSize=30,this.start,this.end,this.highlightStart,this.highlightEnd, this.eventObservable,@required this.fontFamily,@required this.widthCircle,}){
     padding = EdgeInsets.all(widthCircle);
   }
 
@@ -124,7 +123,7 @@ class _FlutterGaugeMainState extends State<FlutterGaugeMain>  with TickerProvide
                       child: new CustomPaint(
                           foregroundPainter: new LinePainter(
                               lineColor: this.widget.backgroundColor,
-                              completeColor: this.widget.primaryColor,
+                              completeColor: this.widget.circleColor,
                               startValue: this.start,
                               endValue: this.end,
                               startPercent: this.widget.highlightStart,
@@ -166,7 +165,7 @@ class _FlutterGaugeMainState extends State<FlutterGaugeMain>  with TickerProvide
                               end: this.end,
                               value: this.val,
                               fontFamily: widget.fontFamily,
-                              color: this.widget.colorHourHand,
+//                              color: this.widget.colorHourHand,
                               widthCircle: widget.widthCircle,
                               textStyle:widget.textStyle == null
                               ?TextStyle(
@@ -191,7 +190,7 @@ class _FlutterGaugeMainState extends State<FlutterGaugeMain>  with TickerProvide
                                 value: val,
                                 start: this.start,
                                 end: this.end,
-                                color: this.widget.accentColor,
+                                color: this.widget.handColor,
                                 handSize: widget.handSize
                             ),
                           ),
@@ -210,7 +209,6 @@ class _FlutterGaugeMainState extends State<FlutterGaugeMain>  with TickerProvide
                               end: this.end,
                               value: this.val,
                               fontFamily: widget.fontFamily,
-                              color: this.widget.colorHourHand,
                               textStyle:widget.counterStyle == null
                               ?TextStyle(
                                   color: Colors.black,

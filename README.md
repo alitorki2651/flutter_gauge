@@ -84,7 +84,8 @@ class _MyHomePageState extends State<MyHomePage> {
               Expanded(child: FlutterGauge(index: 50.0,counterStyle : TextStyle(color: Colors.black,fontSize: 25,),widthCircle: 10,secondsMarker: SecondsMarker.none,number: Number.all),),
               Expanded(child: FlutterGauge(index: 25.0,counterStyle : TextStyle(color: Colors.black,fontSize: 25,),secondsMarker: SecondsMarker.secondsAndMinute,number: Number.all,numberInAndOut: NumberInAndOut.outside,)),
             ],
-          ),Row(
+          ),
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Expanded(child: FlutterGauge(index: 50.0,width: 800,counterStyle : TextStyle(color: Colors.black,fontSize: 25,),widthCircle: 10,secondsMarker: SecondsMarker.none,number: Number.all),),

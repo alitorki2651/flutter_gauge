@@ -20,14 +20,13 @@ class GaugeTextPainter extends CustomPainter {
   double value;
   double widthCircle;
   String fontFamily;
-  Color color;
   Number number;
   SecondsMarker secondsMarker;
   NumberInAndOut numberInAndOut;
   Color inactiveColor;
   Color activeColor;
 
-  GaugeTextPainter({this.inactiveColor, this.activeColor, this.numberInAndOut,this.widthCircle,this.secondsMarker,this.start, this.end, this.value,this.fontFamily,this.textStyle,@required this.color,this.number,})
+  GaugeTextPainter({this.inactiveColor, this.activeColor, this.numberInAndOut,this.widthCircle,this.secondsMarker,this.start, this.end, this.value,this.fontFamily,this.textStyle,this.number,})
       : tickPaint = new Paint(),
         textPainter = new TextPainter(
           textAlign: TextAlign.center,
@@ -180,18 +179,17 @@ class GaugeTextCounter extends CustomPainter {
   int start;
   double value;
   String fontFamily;
-  Color color;
   CounterAlign counterAlign;
   double width;
   bool isDecimal;
 
-  GaugeTextCounter({this.isDecimal,this.width,this.counterAlign,this.start, this.end, this.value,this.fontFamily,this.textStyle,@required this.color})
+  GaugeTextCounter({this.isDecimal,this.width,this.counterAlign,this.start, this.end, this.value,this.fontFamily,this.textStyle,})
       : tickPaint = new Paint(),
         textPainter = new TextPainter(
           textAlign: TextAlign.center,
           textDirection: TextDirection.rtl,
         ){
-    tickPaint.color = color;
+    tickPaint.color = Colors.green;
   }
   @override
   void paint(Canvas canvas, Size size) {
