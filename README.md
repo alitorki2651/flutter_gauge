@@ -1,9 +1,9 @@
 
 ### Chart Types
-![](https://github.com/alitorki2651/flutter_gauge/tree/master/Image/1.jpg)
-![](https://github.com/alitorki2651/flutter_gauge/tree/master/Image/1.jpg)
-![](https://github.com/alitorki2651/flutter_gauge/tree/master/Image/1.jpg)
-![](https://github.com/alitorki2651/flutter_gauge/tree/master/Image/1.jpg)
+![](https://github.com/alitorki2651/flutter_gauge/blob/master/Image/1.jpg)
+![](https://github.com/alitorki2651/flutter_gauge/blob/master/Image/2.jpg)
+![](https://github.com/alitorki2651/flutter_gauge/blob/master/Image/3.jpg)
+![](https://github.com/alitorki2651/flutter_gauge/blob/master/Image/4.jpg)
 
 ---
 ## Getting Started
