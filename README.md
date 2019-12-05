@@ -18,7 +18,7 @@ You should then run `flutter packages upgrade` or update your packages in Intell
 
 In your Dart code, to use it:
 ```dart
-import 'package:flutter_gauge/fluttergauge.dart';
+import 'package:flutter_gauge/flutter_gauge.dart';
 ```
 
 
