@@ -11,12 +11,13 @@
 You should ensure that you add the following dependency in your Flutter project.
 ```yaml
 dependencies:
- flutter_gauge: ^1.0.7
+ flutter_gauge: ^1.0.8
 ```
 
 You should then run `flutter packages upgrade` or update your packages in IntelliJ.
 
 In your Dart code, to use it:
+
 ```dart
 import 'package:flutter_gauge/flutter_gauge.dart';
 ```
