@@ -38,9 +38,9 @@ class GaugeTextPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     var tickMarkLength;
     final angle = ((2/3) * 2) * pi / end;
-    final radius = size.width / 2;
+//    final radius = (size.width / 2)-widthCircle;
+    final radius = (size.width / 2);
     canvas.save();
-
     // drawing
     canvas.translate(radius, radius);
     canvas.rotate(-2.1);
@@ -58,15 +58,21 @@ class GaugeTextPainter extends CustomPainter {
 
       }
 
+
+//      canvas.translate(-1, 0);
+//      canvas.transform(4.0);
       //seconds & minutes
       if(i != 0 && i != end){ //(end / 1.5).toInt() > i && i != 0
         if(secondsMarker == SecondsMarker.all){
+
           canvas.drawLine(new Offset(0.0, -radius - 21), new Offset(0.0, -radius - 15 + tickMarkLength), tickPaint);
         }else if(secondsMarker == SecondsMarker.minutes){
           if(i % 5 == 0){
+
             canvas.drawLine(new Offset(0.0, -radius - 10), new Offset(0.0, -radius - 15 + tickMarkLength), tickPaint);
           }
         }else if(secondsMarker == SecondsMarker.secondsAndMinute){
+
           if(i % 5 == 0){
             canvas.drawLine(new Offset(0.0, -radius + 20), new Offset(0.0, -radius + 12), tickPaint);
           }else{
@@ -84,9 +90,9 @@ class GaugeTextPainter extends CustomPainter {
         String label = i.toString();
         canvas.save();
         if(numberInAndOut == NumberInAndOut.inside){
-          canvas.translate(i == 40 ? -0.0 : 0.0, -radius + (widthCircle*1.6));
+          canvas.translate(i == 40 ? -0.0 : 0.0, -radius + (widthCircle * 2));
         }else{
-          canvas.translate(i == 40 ? -0.0 : 0.0, -radius - (widthCircle*1.4));
+          canvas.translate(i == 40 ? -0.0 : 0.0, -radius - (0));
         }
 
         textPainter.text = new TextSpan(

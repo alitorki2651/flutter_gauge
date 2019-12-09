@@ -72,6 +72,12 @@ class _FlutterGaugeMainState extends State<FlutterGaugeMain>  with TickerProvide
   StreamSubscription<double> subscription;
 
 
+  @override
+  void dispose() {
+    percentageAnimationController.dispose();
+    super.dispose();
+  }
+
 
   _FlutterGaugeMainState(int start, int end, double highlightStart, double highlightEnd, PublishSubject<double> eventObservable) {
     this.start = start;
@@ -110,6 +116,7 @@ class _FlutterGaugeMainState extends State<FlutterGaugeMain>  with TickerProvide
             return new Container(
               height: widget.width,
               width: widget.width,
+              alignment: Alignment.center,
               child: new Stack(
                   fit: StackFit.expand,
 
@@ -151,9 +158,10 @@ class _FlutterGaugeMainState extends State<FlutterGaugeMain>  with TickerProvide
                     ),
 
                     Container(
-                      height: constraints.maxWidth,
-                      width: constraints.maxWidth,
-                      padding: EdgeInsets.only(top: widget.widthCircle+(widget.widthCircle/2.5),bottom: widget.widthCircle+(widget.widthCircle/4),left: widget.widthCircle+(widget.widthCircle/4),right: widget.widthCircle+(widget.widthCircle/4)),
+                      height: constraints.maxWidth ,
+                      width: constraints.maxWidth ,
+//                      alignment: Alignment.center,
+                      padding: EdgeInsets.only(top: widget.hand == Hand.short ?widget.widthCircle :widget.widthCircle,bottom: widget.widthCircle,right: widget.widthCircle,left: widget.widthCircle,),
                       child: new CustomPaint(
                           painter: new GaugeTextPainter(
                               numberInAndOut: widget.numberInAndOut,
